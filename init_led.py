@@ -1,6 +1,7 @@
 #!/use/bin/env python2
 
 from rpi_ws281x import PixelStrip, Color
+import argparse
 
 # LED strip configuration:
 LED_COUNT = 1         # Number of LED pixels.
@@ -24,9 +25,16 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 if __name__ == '__main__':
+	# Process arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('number', help='anchor number')
+    args = parser.parse_args()
+
+    print args.number
+
     strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
     # Intialize the library (must be called once before other functions).
     strip.begin()
-
-    strip.setPixelColor(0, wheel(100))
+    NUM_ANCHORS = 10
+    strip.setPixelColor(0, wheel(255/NUM_ANCHORS * (int(args.number)-1)))
     strip.show()
